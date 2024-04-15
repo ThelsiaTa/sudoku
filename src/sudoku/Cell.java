@@ -1,7 +1,9 @@
 package sudoku;
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.border.Border;
+
 /**
  * The Cell class model the cells of the Sudoku puzzle, by customizing (subclass)
  * the javax.swing.JTextField to include row/column, puzzle number and status.
@@ -11,7 +13,8 @@ public class Cell extends JTextField {
 
    // Define named constants for JTextField's colors and fonts
    //  to be chosen based on CellStatus
-   public static final Color BG_GIVEN = new Color(240, 240, 240); // RGB
+   public static final Color BG_GIVEN_EVEN = new Color(230, 211, 173); // RGB
+   public static final Color BG_GIVEN_ODD = new Color(252, 242, 196); // RGB
    public static final Color FG_GIVEN = Color.BLACK;
    public static final Color FG_NOT_GIVEN = Color.GRAY;
    public static final Color BG_TO_GUESS  = Color.YELLOW;
@@ -35,6 +38,7 @@ public class Cell extends JTextField {
       // Inherited from JTextField: Beautify all the cells once for all
       super.setHorizontalAlignment(JTextField.CENTER);
       super.setFont(FONT_NUMBERS);
+      super.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
    }
 
    /** Reset this cell for a new game, given the puzzle number and isGiven */
@@ -50,16 +54,29 @@ public class Cell extends JTextField {
          // Inherited from JTextField: Set display properties
          super.setText(number + "");
          super.setEditable(false);
-         super.setBackground(BG_GIVEN);
+
+         if ((row / 3 + col / 3) % 2 == 0) {
+            super.setBackground(BG_GIVEN_EVEN);
+         } else {
+            super.setBackground(BG_GIVEN_ODD);
+         }
          super.setForeground(FG_GIVEN);
+
       } else if (status == CellStatus.TO_GUESS) {
          // Inherited from JTextField: Set display properties
          super.setText("");
          super.setEditable(true);
          super.setBackground(BG_TO_GUESS);
          super.setForeground(FG_NOT_GIVEN);
+
       } else if (status == CellStatus.CORRECT_GUESS) {  // from TO_GUESS
-         super.setBackground(BG_CORRECT_GUESS);
+         if ((row / 3 + col / 3) % 2 == 0) {
+            super.setBackground(BG_GIVEN_EVEN);
+         } else {
+            super.setBackground(BG_GIVEN_ODD);
+         }
+         super.setForeground(FG_GIVEN);
+
       } else if (status == CellStatus.WRONG_GUESS) {    // from TO_GUESS
          super.setBackground(BG_WRONG_GUESS);
       }
