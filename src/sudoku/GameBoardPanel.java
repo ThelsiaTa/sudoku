@@ -107,7 +107,7 @@ public class GameBoardPanel extends JPanel {
           * Update the cell status sourceCell.status,
           * and re-paint the cell via sourceCell.paint().
           */
-         if (numberIn == sourceCell.number) {
+          if (numberIn == sourceCell.number) {
             sourceCell.status = CellStatus.CORRECT_GUESS;
             sourceCell.setEditable(false);
 
