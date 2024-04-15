@@ -20,6 +20,7 @@ public class BottomPanel extends JPanel {
         timer = new Timer(1000, new TimeListener());
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
         bottomPanel.add(lblTime);
+        this.setVisible(true);
     }
 
     public void startTimer() {

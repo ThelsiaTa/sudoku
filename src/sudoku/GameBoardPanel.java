@@ -47,14 +47,9 @@ public class GameBoardPanel extends JPanel {
       super.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
 
       //timer
-      timer = new BottomPanel();
+      //timer = new BottomPanel();
 
    }
-
-
-
-
-
 
    /**
     * Generate a new puzzle; and reset the game board of cells based on the puzzle.
@@ -63,7 +58,7 @@ public class GameBoardPanel extends JPanel {
    public void newGame() {
       // Generate a new puzzle
       puzzle.newPuzzle(5);
-      timer.startTimer();
+      SudokuMain.timer.start();
 
       // Initialize all the 9x9 cells, based on the puzzle.
       for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
@@ -85,7 +80,7 @@ public class GameBoardPanel extends JPanel {
             }
          }
       }
-      timer.stopTimer();
+      SudokuMain.timer.stop();
       return true;
    }
 
