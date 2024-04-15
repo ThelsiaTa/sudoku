@@ -1,7 +1,6 @@
 package sudoku;
 import java.awt.*;
 import javax.swing.*;
-// import GameBoardPanel;
 /**
  * The main Sudoku program
  */
@@ -11,16 +10,19 @@ public class SudokuMain extends JFrame {
    // private variables
    GameBoardPanel board = new GameBoardPanel();
    JButton btnNewGame = new JButton("New Game");
+   MenuBar mb = new MenuBar();
 
    // Constructor
    public SudokuMain() {
-      Container cp = getContentPane();
+      Container cp = super.getContentPane();
       cp.setLayout(new BorderLayout());
 
+      this.setJMenuBar(mb.menuBar);
       cp.add(board, BorderLayout.CENTER);
+      cp.add(mb, BorderLayout.NORTH);
 
       // Add a button to the south to re-start the game via board.newGame()
-      // ......
+      cp.add(btnNewGame, BorderLayout.SOUTH);
 
       // Initialize the game board to start the game
       board.newGame();
@@ -42,4 +44,12 @@ public class SudokuMain extends JFrame {
         }
      });
    }
+
+
+   /* FUNCTION */
+
+
+
+   /* EVENT LISTENER */
+   
 }
