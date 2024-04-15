@@ -62,6 +62,7 @@ public class Puzzle {
             isGiven[row][col] = hardcodedIsGiven[row][col];
          }
       }
+
    }
 
     */
