@@ -10,14 +10,20 @@ public class SudokuMain extends JFrame {
 
    // private variables
    GameBoardPanel board = new GameBoardPanel();
+   BottomPanel bottomPanel = new BottomPanel();
    JButton btnNewGame = new JButton("New Game");
+
 
    // Constructor
    public SudokuMain() {
+      //sudoku panel
       Container cp = getContentPane();
       cp.setLayout(new BorderLayout());
-
       cp.add(board, BorderLayout.CENTER);
+
+      //bottom panel
+      cp.add(bottomPanel, BorderLayout.SOUTH);
+
 
       // Add a button to the south to re-start the game via board.newGame()
       // ......
