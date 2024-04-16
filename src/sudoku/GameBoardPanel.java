@@ -15,12 +15,6 @@ public class GameBoardPanel extends JPanel {
    // Define properties
    public static GameDifficulty difficulty;
    private int cellsToGuess;
-   public void setCellsToGuess(int cells){
-      this.cellsToGuess = cells;
-   }
-   public int getCellsToGuess(){
-      return cellsToGuess;
-   }
    /** The game board composes of 9x9 Cells (customized JTextFields) */
    private Cell[][] cells = new Cell[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
    /** It also contains a Puzzle with array numbers and isGiven */
@@ -71,8 +65,9 @@ public class GameBoardPanel extends JPanel {
        else
           cellsToGuess = 64;
 
-    puzzle.newPuzzle(cellsToGuess);
-    timer.startTimer();
+   // int cellsToGuess = SudokuMain.cellsToGuess;
+   puzzle.newPuzzle(cellsToGuess);
+   timer.startTimer();
 
       // Initialize all the 9x9 cells, based on the puzzle.
       for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
