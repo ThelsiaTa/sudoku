@@ -13,18 +13,17 @@ import javax.swing.*;
 public class SudokuMain extends JFrame {
    private static final long serialVersionUID = 1L;  // to prevent serial warning
 
-   // private variables
+   // variables
    GameBoardPanel board = new GameBoardPanel();
-
    BottomPanel bottomPanel = new BottomPanel();
    JButton btnNewGame = new JButton("New Game");
    JButton btnPlayAgain = new JButton("Play Again");
    JButton btnGetHint = new JButton("Get Hint");
    MenuBar mb = new MenuBar();
-
+   Container cp = super.getContentPane();
 
    //timer
-   JPanel timerPanel = new JPanel();
+   JPanel timerPanel = new JPanel(); 
    static JLabel lblTime = new JLabel("00:00");
    public static Timer timer;
    static int seconds = 0;
@@ -48,11 +47,8 @@ public class SudokuMain extends JFrame {
    // Constructor
    public SudokuMain() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
 
-      //sudoku panel
-      Container cp = super.getContentPane();
       cp.setLayout(new BorderLayout());
       this.setJMenuBar(mb.menuBar);
-
       cp.add(board, BorderLayout.CENTER);
       cp.add(mb, BorderLayout.NORTH);
       cp.add(bottomPanel, BorderLayout.SOUTH);
@@ -65,7 +61,8 @@ public class SudokuMain extends JFrame {
       timer = new Timer(1000, new TimeListener());
       timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
       timerPanel.add(lblTime);
-      mb.add(timerPanel);
+      cp.add(timerPanel, BorderLayout.NORTH);
+
 
 
       /* BOTTOM PANEL */
@@ -81,7 +78,6 @@ public class SudokuMain extends JFrame {
       bottomPanel.add(hintPanel);
 
       //getHint
-      mb.add(btnGetHint);
       btnGetHint.addActionListener(new hintListener());
 
       //music
@@ -99,12 +95,11 @@ public class SudokuMain extends JFrame {
 
 
       // Initialize the game board to start the game
-      board.newGame();
-
       pack();     // Pack the UI components, instead of using setSize()
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // to handle window-closing
       setTitle("Sudoku");
       setVisible(true);
+
    }
 
 
@@ -124,17 +119,52 @@ public class SudokuMain extends JFrame {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+          // Create the main window but don't show it yet
+          SudokuMain mainFrame = new SudokuMain();
+          mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+          mainFrame.setTitle("Sudoku");
+          mainFrame.setVisible(true);
+          mainFrame.pack();
+
+          // Create and show the welcome dialog
+          sudoku.EntryPanel welcomeScreen = new sudoku.EntryPanel(mainFrame);
+          welcomeScreen.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+          welcomeScreen.setVisible(true);
         }
      });
    }
 
 
 
+   /* COMPONENT CLASS */
 
-   /* FUNCTION */
+   /* ----------------------- MENU BAR --------------------------- */
+   public class MenuBar extends JPanel {
+      private static final long serialVersionUID = 1L;
+      JMenuBar menuBar;
+      JButton gameMenu;
+      JButton fileMenu;
+      JButton settingMenu;
+  
+      public MenuBar(){
+          this.setSize(500, 500);
+          this.setLayout(new FlowLayout());
+  
+          menuBar = new JMenuBar();
+          fileMenu =  new JButton("File");
+          gameMenu =  new JButton("Game");
+          settingMenu =  new JButton("Setting");
 
+          menuBar.add(fileMenu);
+          menuBar.add(gameMenu);
+          menuBar.add(settingMenu);
+          menuBar.add(btnGetHint);
+       
+          this.setVisible(false);
+  
+      }
 
-
+   }
    /* EVENT LISTENER */
    //timer
    public class TimeListener implements ActionListener {
@@ -168,7 +198,6 @@ public class SudokuMain extends JFrame {
             referenceCell.paint();
          }
       }
-   }
 
    // play again
    private class playAgainListener implements ActionListener {
@@ -203,4 +232,5 @@ public class SudokuMain extends JFrame {
    }
 
    
-}
+
+   } 

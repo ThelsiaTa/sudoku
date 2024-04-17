@@ -18,10 +18,13 @@ public class GameBoardPanel extends JPanel {
                                              // Board width/height in pixels
 
    // Define properties
+   public static GameDifficulty difficulty;
    /** The game board composes of 9x9 Cells (customized JTextFields) */
-   private Cell[][] cells = new Cell[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
+   private static Cell[][] cells = new Cell[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
    /** It also contains a Puzzle with array numbers and isGiven */
-   private Puzzle puzzle = new Puzzle();
+
+   private static Puzzle puzzle = new Puzzle();
+
 
    //music
    //private MusicPlayer musicPlayer = new MusicPlayer();
@@ -55,18 +58,26 @@ public class GameBoardPanel extends JPanel {
 
       super.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
 
-      //timer
-      //timer = new BottomPanel();
 
    }
+   
 
    /**
     * Generate a new puzzle; and reset the game board of cells based on the puzzle.
     * You can call this method to start a new game.
     */
-   public void newGame() {
+   public static void newGame() {
       // Generate a new puzzle
-      puzzle.newPuzzle(5);
+       if (difficulty == GameDifficulty.EASY)
+          Puzzle.cellsToGuess = 32;
+       else if (difficulty == GameDifficulty.MEDIUM)
+          Puzzle.cellsToGuess = 45;
+       else if (difficulty == GameDifficulty.HARD)
+          Puzzle.cellsToGuess = 54;
+       else
+          Puzzle.cellsToGuess = 64;
+
+      puzzle.newPuzzle(Puzzle.cellsToGuess);
       SudokuMain.timer.start();
       //musicPlayer.playMusic(url.getPath());
       SudokuMain.bgMusic.start();
