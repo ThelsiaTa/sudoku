@@ -16,6 +16,7 @@ public class SudokuMain extends JFrame {
    GameBoardPanel board = new GameBoardPanel();
    BottomPanel bottomPanel = new BottomPanel();
    JButton btnNewGame = new JButton("New Game");
+   JButton btnPlayAgain = new JButton("Play Again");
    JButton btnGetHint = new JButton("Get Hint");
    MenuBar mb = new MenuBar();
    Container cp = super.getContentPane();
@@ -85,8 +86,13 @@ public class SudokuMain extends JFrame {
       //NEW GAME
       btnNewGame.addActionListener(new newGameListener());
 
-      // Add a button to the south to re-start the game via board.newGame()
-      bottomPanel.add(btnNewGame);
+      // new game -> turn back to entry panel
+      mb.add(btnNewGame);
+
+      // play again
+      btnPlayAgain.addActionListener(new playAgainListener());
+      bottomPanel.add(btnPlayAgain);
+
 
 
       // Initialize the game board to start the game
@@ -201,4 +207,35 @@ public class SudokuMain extends JFrame {
  }
 
       }
+   // play again
+   private class playAgainListener implements ActionListener {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+               board.getCell(row, col).setEditable(true);
+               repaint();
+            }
+         }
+         timer.restart();
+         mistakesCount = 0;
+         lblMistakes.setText("Mistakes: " + mistakesCount);
+         lblTime.setText("00:00");
+         hintCount = 3;
+         lblHintLeft.setText("Hints Left: " + hintCount);
+
+         for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
+            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
+               Cell referenceCell = board.getCell(row, col);
+               if (referenceCell.status != CellStatus.GIVEN) {
+                  referenceCell.status = CellStatus.TO_GUESS;
+                  seconds = 0;
+                  referenceCell.paint();
+               }
+               referenceCell.setEditable(true);
+            }
+         }
+      }
+
+   }
 }
