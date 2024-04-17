@@ -14,12 +14,10 @@ public class GameBoardPanel extends JPanel {
 
    // Define properties
    public static GameDifficulty difficulty;
-   private int cellsToGuess;
    /** The game board composes of 9x9 Cells (customized JTextFields) */
-   private Cell[][] cells = new Cell[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
+   private static Cell[][] cells = new Cell[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
    /** It also contains a Puzzle with array numbers and isGiven */
-   private Puzzle puzzle = new Puzzle();
-   public BottomPanel timer;
+   private static Puzzle puzzle = new Puzzle();
 
    /** Constructor */
    public GameBoardPanel() {
@@ -48,30 +46,27 @@ public class GameBoardPanel extends JPanel {
 
       super.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
 
-      //timer
-      //timer = new BottomPanel();
 
    }
+   
 
    /**
     * Generate a new puzzle; and reset the game board of cells based on the puzzle.
     * You can call this method to start a new game.
     */
-   public void newGame() {
+   public static void newGame() {
       // Generate a new puzzle
        if (difficulty == GameDifficulty.EASY)
-          cellsToGuess = 32;
+          Puzzle.cellsToGuess = 32;
        else if (difficulty == GameDifficulty.MEDIUM)
-          cellsToGuess = 45;
+          Puzzle.cellsToGuess = 45;
        else if (difficulty == GameDifficulty.HARD)
-          cellsToGuess = 54;
+          Puzzle.cellsToGuess = 54;
        else
-          cellsToGuess = 64;
+          Puzzle.cellsToGuess = 64;
 
-   // int cellsToGuess = SudokuMain.cellsToGuess;
-   puzzle.newPuzzle(cellsToGuess);
-   SudokuMain.timer.start();
-
+      puzzle.newPuzzle(Puzzle.cellsToGuess);
+      SudokuMain.timer.start();
 
       // Initialize all the 9x9 cells, based on the puzzle.
       for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {

@@ -9,16 +9,14 @@ import javax.swing.*;
 public class SudokuMain extends JFrame {
    private static final long serialVersionUID = 1L;  // to prevent serial warning
 
-   // private variables
+   // variables
    GameBoardPanel board = new GameBoardPanel();
-
-   // BottomPanel bottomPanel = new BottomPanel();
    JButton btnNewGame = new JButton("New Game");
    MenuBar mb = new MenuBar();
-
+   Container cp = super.getContentPane();
 
    //timer
-   JPanel timerPanel = new JPanel();
+   JPanel timerPanel = new JPanel(); 
    static JLabel lblTime = new JLabel("00:00");
    public static Timer timer;
    static int seconds = 0;
@@ -26,12 +24,8 @@ public class SudokuMain extends JFrame {
 
    // Constructor
    public SudokuMain() {
-
-      //sudoku panel
-      Container cp = super.getContentPane();
       cp.setLayout(new BorderLayout());
       this.setJMenuBar(mb.menuBar);
-
       cp.add(board, BorderLayout.CENTER);
       cp.add(mb, BorderLayout.NORTH);
 
@@ -43,24 +37,23 @@ public class SudokuMain extends JFrame {
       timer = new Timer(1000, new TimeListener());
       timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
       timerPanel.add(lblTime);
-      mb.add(timerPanel);
-
-
-      //bottom panel
-      //cp.add(bottomPanel, BorderLayout.SOUTH);
-
+      // mb.add(timerPanel);
+      cp.add(timerPanel, BorderLayout.NORTH);
 
       // Add a button to the south to re-start the game via board.newGame()
       cp.add(btnNewGame, BorderLayout.SOUTH);
 
       // Initialize the game board to start the game
-      board.newGame();
+      // board.newGame();
       pack();     // Pack the UI components, instead of using setSize()
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // to handle window-closing
       setTitle("Sudoku");
       setVisible(true);
+
    }
-   public class TimeListener implements ActionListener {
+
+
+public class TimeListener implements ActionListener {
       @Override
       public void actionPerformed(ActionEvent evt) {
          seconds++;
@@ -77,7 +70,17 @@ public class SudokuMain extends JFrame {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
-           new SudokuMain(); // Let the constructor does the job
+          // Create the main window but don't show it yet
+          SudokuMain mainFrame = new SudokuMain();
+          mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+          mainFrame.setTitle("Sudoku");
+          mainFrame.setVisible(true);
+          mainFrame.pack();
+
+          // Create and show the welcome dialog
+          sudoku.EntryPanel welcomeScreen = new sudoku.EntryPanel(mainFrame);
+          welcomeScreen.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+          welcomeScreen.setVisible(true);
         }
      });
    }
@@ -106,45 +109,52 @@ public class SudokuMain extends JFrame {
           fileMenu =  new JMenu("File");
           gameMenu =  new JMenu("Game");
           settingMenu =  new JMenu("Setting");
-          difficultyMenu =  new JMenu("Difficulty Level");
-  
-          easyItem = new JMenuItem("Easy");
-          mediumItem = new JMenuItem("Medium");
-          hardItem = new JMenuItem("Hard");
-  
-          easyItem.addActionListener(new DifficultyListener());
-          mediumItem.addActionListener(new DifficultyListener());
-          hardItem.addActionListener(new DifficultyListener());
-  
-          difficultyMenu.add(easyItem);
-          difficultyMenu.add(mediumItem);
-          difficultyMenu.add(hardItem);
+
           menuBar.add(fileMenu);
           menuBar.add(gameMenu);
           menuBar.add(settingMenu);
-          menuBar.add(difficultyMenu);
-          this.setVisible(true);
+       
+          this.setVisible(false);
   
       }
-      private class DifficultyListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent evt){
-            if(evt.getSource() == easyItem){
-                GameBoardPanel.difficulty = GameDifficulty.EASY;
-            }
-            else if(evt.getSource() == mediumItem){
-                GameBoardPanel.difficulty = GameDifficulty.MEDIUM;
-            }
-            else if(evt.getSource() == hardItem){
-                GameBoardPanel.difficulty = GameDifficulty.HARD;
-            }
-            else{
-                GameBoardPanel.difficulty = GameDifficulty.INSANE;
-            }
-        }
-        }
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 
    /* EVENT LISTENER */
    
+
 }
