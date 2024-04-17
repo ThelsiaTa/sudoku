@@ -1,11 +1,7 @@
 package sudoku;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class EntryPanel extends JDialog {
     JLabel welcomeLabel;
@@ -47,17 +43,17 @@ public class EntryPanel extends JDialog {
                 GameBoardPanel.newGame();;
             }
         });
-        easy.addActionListener(new getDifficultyLevel());
-        hard.addActionListener(new getDifficultyLevel());
-        medium.addActionListener(new getDifficultyLevel());
-        insane.addActionListener(new getDifficultyLevel());
+        easy.addActionListener(new difficultyLevelListener());
+        hard.addActionListener(new difficultyLevelListener());
+        medium.addActionListener(new difficultyLevelListener());
+        insane.addActionListener(new difficultyLevelListener());
         
 
         // Set dialog size and position
         pack(); 
         setLocationRelativeTo(SudokuMain);
     }
-     public class getDifficultyLevel implements ActionListener{
+     public class difficultyLevelListener implements ActionListener{
         @Override
          public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == easy) {
@@ -73,3 +69,4 @@ public class EntryPanel extends JDialog {
      }
     }
 }
+

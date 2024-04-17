@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import javax.sound.sampled.*;
 import javax.swing.*;
 /**
@@ -83,6 +82,8 @@ public class SudokuMain extends JFrame {
       audioStream = AudioSystem.getAudioInputStream(new File("src/sudoku/bg_music_sudoku.wav"));
       bgMusic = AudioSystem.getClip();
       bgMusic.open(audioStream);
+      //NEW GAME
+      btnNewGame.addActionListener(new newGameListener());
 
       // Add a button to the south to re-start the game via board.newGame()
       bottomPanel.add(btnNewGame);
@@ -104,8 +105,9 @@ public class SudokuMain extends JFrame {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
-            try {
-                new SudokuMain(); // Let the constructor does the job
+         SudokuMain mainFrame;
+         try {
+                mainFrame= new SudokuMain(); // Let the constructor does the job
             } catch (UnsupportedAudioFileException e) {
                 throw new RuntimeException(e);
             } catch (LineUnavailableException e) {
@@ -114,7 +116,6 @@ public class SudokuMain extends JFrame {
                 throw new RuntimeException(e);
             }
           // Create the main window but don't show it yet
-          SudokuMain mainFrame = new SudokuMain();
           mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           mainFrame.setTitle("Sudoku");
           mainFrame.setVisible(true);
@@ -192,7 +193,12 @@ public class SudokuMain extends JFrame {
             referenceCell.paint();
          }
       }
-
    } 
+   public class newGameListener implements ActionListener {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         GameBoardPanel.newGame();
+ }
 
+      }
 }
