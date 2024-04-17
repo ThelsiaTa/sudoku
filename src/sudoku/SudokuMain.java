@@ -2,6 +2,10 @@ package sudoku;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import javax.sound.sampled.*;
 import javax.swing.*;
 /**
  * The main Sudoku program
@@ -33,9 +37,15 @@ public class SudokuMain extends JFrame {
    static JLabel lblMistakes = new JLabel("Mistakes: " + 0);
    static int mistakesCount = 0;
 
+   //music
+   //URL url = this.getClass().getResource("/bg_music_sudoku.wav");
+   static Clip bgMusic = null;
+   AudioInputStream audioStream;
+
 
    // Constructor
-   public SudokuMain() {
+   public SudokuMain() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+
       cp.setLayout(new BorderLayout());
       this.setJMenuBar(mb.menuBar);
       cp.add(board, BorderLayout.CENTER);
@@ -69,6 +79,11 @@ public class SudokuMain extends JFrame {
       //getHint
       btnGetHint.addActionListener(new hintListener());
 
+      //music
+      audioStream = AudioSystem.getAudioInputStream(new File("src/sudoku/bg_music_sudoku.wav"));
+      bgMusic = AudioSystem.getClip();
+      bgMusic.open(audioStream);
+
       // Add a button to the south to re-start the game via board.newGame()
       bottomPanel.add(btnNewGame);
 
@@ -89,6 +104,15 @@ public class SudokuMain extends JFrame {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
+            try {
+                new SudokuMain(); // Let the constructor does the job
+            } catch (UnsupportedAudioFileException e) {
+                throw new RuntimeException(e);
+            } catch (LineUnavailableException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
           // Create the main window but don't show it yet
           SudokuMain mainFrame = new SudokuMain();
           mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
