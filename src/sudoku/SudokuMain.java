@@ -218,6 +218,8 @@ public class SudokuMain extends JFrame {
             }
          }
          timer.restart();
+         bgMusic.start();
+         bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
          mistakesCount = 0;
          lblMistakes.setText("Mistakes: " + mistakesCount);
          lblTime.setText("00:00");
