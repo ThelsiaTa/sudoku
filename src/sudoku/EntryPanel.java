@@ -1,21 +1,19 @@
 package sudoku;
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
-
+import java.io.File;
+import java.io.IOException;
 
 public class EntryPanel extends JDialog {
     JLabel welcomeLabel;
     JButton startButton;
     JButton easy, medium, hard, insane;
-    BufferedImage backgroundImage;
 
     public EntryPanel(Frame SudokuMain) {
         super(SudokuMain, "Welcome", true);
-
         // Configure the dialog box
         setLayout(new BorderLayout());
         welcomeLabel = new JLabel("Welcome Sudoku", JLabel.CENTER);

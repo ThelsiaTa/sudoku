@@ -67,7 +67,6 @@ public class SudokuMain extends JFrame {
       bottomPanel.add(hintPanel);
 
       //getHint
-      mb.add(btnGetHint);
       btnGetHint.addActionListener(new hintListener());
 
       // Add a button to the south to re-start the game via board.newGame()
@@ -106,38 +105,36 @@ public class SudokuMain extends JFrame {
    }
 
 
+
    /* COMPONENT CLASS */
 
    /* ----------------------- MENU BAR --------------------------- */
    public class MenuBar extends JPanel {
       private static final long serialVersionUID = 1L;
       JMenuBar menuBar;
-      JMenu gameMenu;
-      JMenu fileMenu;
-      JMenu settingMenu;
-      JMenu difficultyMenu;
-      JMenuItem easyItem;
-      JMenuItem mediumItem;
-      JMenuItem hardItem;
+      JButton gameMenu;
+      JButton fileMenu;
+      JButton settingMenu;
   
       public MenuBar(){
           this.setSize(500, 500);
           this.setLayout(new FlowLayout());
   
           menuBar = new JMenuBar();
-          fileMenu =  new JMenu("File");
-          gameMenu =  new JMenu("Game");
-          settingMenu =  new JMenu("Setting");
+          fileMenu =  new JButton("File");
+          gameMenu =  new JButton("Game");
+          settingMenu =  new JButton("Setting");
 
           menuBar.add(fileMenu);
           menuBar.add(gameMenu);
           menuBar.add(settingMenu);
+          menuBar.add(btnGetHint);
        
           this.setVisible(false);
   
       }
 
-
+   }
    /* EVENT LISTENER */
    //timer
    public class TimeListener implements ActionListener {
@@ -171,7 +168,6 @@ public class SudokuMain extends JFrame {
             referenceCell.paint();
          }
       }
-   }
 
    } 
 
