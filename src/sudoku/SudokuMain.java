@@ -11,7 +11,9 @@ public class SudokuMain extends JFrame {
 
    // variables
    GameBoardPanel board = new GameBoardPanel();
+   BottomPanel bottomPanel = new BottomPanel();
    JButton btnNewGame = new JButton("New Game");
+   JButton btnGetHint = new JButton("Get Hint");
    MenuBar mb = new MenuBar();
    Container cp = super.getContentPane();
 
@@ -21,6 +23,16 @@ public class SudokuMain extends JFrame {
    public static Timer timer;
    static int seconds = 0;
 
+   //count hints
+   JPanel hintPanel = new JPanel();
+   static JLabel lblHintLeft = new JLabel("Hint Left: " + 3);
+   static int hintCount = 3;
+
+   //count mistakes
+   JPanel mistakesPanel = new JPanel();
+   static JLabel lblMistakes = new JLabel("Mistakes: " + 0);
+   static int mistakesCount = 0;
+
 
    // Constructor
    public SudokuMain() {
@@ -28,6 +40,7 @@ public class SudokuMain extends JFrame {
       this.setJMenuBar(mb.menuBar);
       cp.add(board, BorderLayout.CENTER);
       cp.add(mb, BorderLayout.NORTH);
+      cp.add(bottomPanel, BorderLayout.SOUTH);
 
       //timer
       timerPanel.setLayout(new GridLayout(1, 2));
@@ -37,14 +50,31 @@ public class SudokuMain extends JFrame {
       timer = new Timer(1000, new TimeListener());
       timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
       timerPanel.add(lblTime);
-      // mb.add(timerPanel);
       cp.add(timerPanel, BorderLayout.NORTH);
 
+
+
+      /* BOTTOM PANEL */
+      // mistakes
+      //lblMistakes.add("Mistakes: " + mistakesCount);
+      lblMistakes.setBorder(BorderFactory.createEmptyBorder(8, 50, 8, 50));
+      mistakesPanel.add(lblMistakes);
+      bottomPanel.add(mistakesPanel);
+
+      // hintCount
+      lblHintLeft.setBorder(BorderFactory.createEmptyBorder(8, 50, 8, 50));
+      hintPanel.add(lblHintLeft);
+      bottomPanel.add(hintPanel);
+
+      //getHint
+      mb.add(btnGetHint);
+      btnGetHint.addActionListener(new hintListener());
+
       // Add a button to the south to re-start the game via board.newGame()
-      cp.add(btnNewGame, BorderLayout.SOUTH);
+      bottomPanel.add(btnNewGame);
+
 
       // Initialize the game board to start the game
-      // board.newGame();
       pack();     // Pack the UI components, instead of using setSize()
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // to handle window-closing
       setTitle("Sudoku");
@@ -52,16 +82,6 @@ public class SudokuMain extends JFrame {
 
    }
 
-
-public class TimeListener implements ActionListener {
-      @Override
-      public void actionPerformed(ActionEvent evt) {
-         seconds++;
-         int lblMinute = seconds / 60;
-         int lblSecond = seconds % 60;
-         lblTime.setText(String.format("%02d:%02d", lblMinute, lblSecond));
-      }
-   }
 
    /** The entry main() entry method */
    public static void main(String[] args) {
@@ -84,7 +104,6 @@ public class TimeListener implements ActionListener {
         }
      });
    }
-
 
 
    /* COMPONENT CLASS */
@@ -118,43 +137,42 @@ public class TimeListener implements ActionListener {
   
       }
 
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  }
 
    /* EVENT LISTENER */
-   
+   //timer
+   public class TimeListener implements ActionListener {
+      @Override
+      public void actionPerformed(ActionEvent evt) {
+         seconds++;
+         int lblMinute = seconds / 60;
+         int lblSecond = seconds % 60;
+         lblTime.setText(String.format("%02d:%02d", lblMinute, lblSecond));
+      }
+   }
+   //hint
+   private class hintListener implements ActionListener {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         int randomRow = (int) (Math.random() * 9);
+         int randomCol = (int) (Math.random() * 9);
+         Cell referenceCell = board.getCell(randomRow, randomCol);
+
+         while (referenceCell.status != CellStatus.TO_GUESS && hintCount > 0) {
+            randomRow = (int) (Math.random() * 9);
+            randomCol = (int) (Math.random() * 9);
+            referenceCell = board.getCell(randomRow, randomCol);
+         }
+
+         hintCount--;
+         if (referenceCell.status == CellStatus.TO_GUESS && hintCount >= 0) {
+            lblHintLeft.setText("Hints Left: " + hintCount);
+            referenceCell.setText("" + referenceCell.number);
+            referenceCell.status = CellStatus.CORRECT_GUESS;
+            referenceCell.paint();
+         }
+      }
+   }
+
+   } 
 
 }
