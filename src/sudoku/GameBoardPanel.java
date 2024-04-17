@@ -1,6 +1,11 @@
 package sudoku;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URL;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 public class GameBoardPanel extends JPanel {
@@ -17,6 +22,11 @@ public class GameBoardPanel extends JPanel {
    private Cell[][] cells = new Cell[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
    /** It also contains a Puzzle with array numbers and isGiven */
    private Puzzle puzzle = new Puzzle();
+
+   //music
+   //private MusicPlayer musicPlayer = new MusicPlayer();
+   //URL url = this.getClass().getResource("/bg_music_sudoku.wav");
+
 
    /** Constructor */
    public GameBoardPanel() {
@@ -58,6 +68,10 @@ public class GameBoardPanel extends JPanel {
       // Generate a new puzzle
       puzzle.newPuzzle(5);
       SudokuMain.timer.start();
+      //musicPlayer.playMusic(url.getPath());
+      SudokuMain.bgMusic.start();
+      SudokuMain.bgMusic.loop(Clip.LOOP_CONTINUOUSLY);
+
 
       // Initialize all the 9x9 cells, based on the puzzle.
       for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
@@ -125,11 +139,13 @@ public class GameBoardPanel extends JPanel {
           *   by calling isSolved(). Put up a congratulation JOptionPane, if so.
           */
          if (isSolved()) {
-            JOptionPane.showMessageDialog(null, "Congratulations!");
             SudokuMain.timer.stop();
+            SudokuMain.bgMusic.stop();
+            JOptionPane.showMessageDialog(null, "Congratulations!");
          }
          if (isGameOver()) {
             SudokuMain.timer.stop();
+            SudokuMain.bgMusic.stop();
             JOptionPane.showMessageDialog(null, "Game Over. You lose!");
          }
       }
