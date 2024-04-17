@@ -9,6 +9,7 @@ public class Puzzle {
     // All variables have package access
     // The numbers on the puzzle
     int[][] numbers = new int[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
+    public static int cellsToGuess;
     // The clues - isGiven (no need to guess) or need to guess
     boolean[][] isGiven = new boolean[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
 
