@@ -17,7 +17,6 @@ public class GameBoardPanel extends JPanel {
    private Cell[][] cells = new Cell[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
    /** It also contains a Puzzle with array numbers and isGiven */
    private Puzzle puzzle = new Puzzle();
-   public BottomPanel timer;
 
    /** Constructor */
    public GameBoardPanel() {
@@ -80,8 +79,15 @@ public class GameBoardPanel extends JPanel {
             }
          }
       }
-      SudokuMain.timer.stop();
       return true;
+   }
+
+   public Cell getCell(int row, int col) {
+      return cells[row][col];
+   }
+
+   public boolean isGameOver() {
+      return SudokuMain.mistakesCount == 5;
    }
 
    // [TODO 2] Define a Listener Inner Class for all the editable Cells
@@ -108,6 +114,8 @@ public class GameBoardPanel extends JPanel {
 
          } else {
             sourceCell.status = CellStatus.WRONG_GUESS;
+            SudokuMain.mistakesCount++;
+            SudokuMain.lblMistakes.setText("Mistakes: " + SudokuMain.mistakesCount);
          }
          sourceCell.paint();   // re-paint this cell based on its status
 
@@ -118,6 +126,11 @@ public class GameBoardPanel extends JPanel {
           */
          if (isSolved()) {
             JOptionPane.showMessageDialog(null, "Congratulations!");
+            SudokuMain.timer.stop();
+         }
+         if (isGameOver()) {
+            SudokuMain.timer.stop();
+            JOptionPane.showMessageDialog(null, "Game Over. You lose!");
          }
       }
    }
